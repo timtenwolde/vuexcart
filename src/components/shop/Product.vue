@@ -1,16 +1,28 @@
 <template>
   <div class="thumbnail">
-    <img src="https://placeholdit.imgix.net/~text?txtsize=33&txt=250%C3%97250&w=250&h=250" alt="">
+    <img :src="product.image" alt="product.description">
     <div class="caption">
-      <a href="#">Product title</a> £0.00
-      <p>Product description</p>
-      <a href="#" class="btn btn-default" role="button">Add to cart</a>
+      <a href="#">{{ product.title }}</a> €{{ product.price }}
+      <p>{{ product.description }}</p>
+      <a href="#" class="btn btn-default" @click.prevent="addToCart" role="button">Add to cart</a>
     </div>
   </div>
 </template>
 
 <script>
+  import { mapActions } from 'vuex'
   export default {
-    //
+    props: ['product'],
+    methods: {
+      ...mapActions({
+        addProductToCart: 'addProductToCart'
+      }),
+      addToCart () {
+        this.addProductToCart({
+          product: this.product,
+          quantity: 1
+        })
+      }
+    }
   }
 </script>

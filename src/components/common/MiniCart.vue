@@ -1,20 +1,36 @@
 <template>
   <div class="mini-cart">
-    <ul class="list-group">
-      <li class="list-group-item">
-        <a href="#" class="badge">Remove</a>
-        1 x Some product @ £0.00
+    <ul class="list-group" v-if="cart.length">
+      <li class="list-group-item" v-for="item in cart">
+        <a href="#" class="badge" @click.prevent="removeProductFromCart(item.product.id)">Remove</a>
+        {{ item.quantity }} x {{ item.product.title }} @ €{{ item.product.price }}
       </li>
       <li class="list-group-item">
-        <a href="#">Clear cart</a>
+        <a href="#" @click.prevent="removeAllProductsFromCart">Clear cart</a>
       </li>
     </ul>
-    <p>No items in cart</p>
+    <p v-else>No items in cart</p>
   </div>
 </template>
 
 <script>
+  import { mapGetters, mapActions } from 'vuex'
   export default {
-    name: 'mini-cart'
+    name: 'mini-cart',
+    computed: {
+      ...mapGetters({
+        cart: 'cart'
+      })
+    },
+    methods: {
+      ...mapActions({
+        getCard: 'getCard',
+        removeProductFromCart: 'removeProductFromCart',
+        removeAllProductsFromCart: 'removeAllProductsFromCart'
+      })
+    },
+    mounted () {
+      this.getCard()
+    }
   }
 </script>
